@@ -21,17 +21,17 @@ services:
 
   prometheus:
     image: prom/prometheus:v2.8.0
-    network_mode: host
     volumes:
       - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:z
     command:
       - '--config.file=/etc/prometheus/prometheus.yml'
     ports:
       - 9090:9090
+    extra_hosts:
+      - "host.docker.internal:$DOCKER_HOST_IP"
 
   grafana:
     image: grafana/grafana:6.0.1
-    network_mode: host
     depends_on:
       - prometheus
     ports:
